@@ -1,28 +1,21 @@
 class Pdftk < BaseCustom
+  S3_PREFIX='http://s3.amazonaws.com/heroku_binaries'
+  NAME_SOURCES={ pdftk: "#{S3_PREFIX}/pdftk.tar.gz", poppler:  "#{S3_PREFIX}/heroku-poppler.tgz"}
   def path
-    "#{build_path}/vendor/#{name}"
-  end
-  def name
-    "pdftk"
-  end
-  def source_url
-    "http://s3.amazonaws.com/heroku_binaries/pdftk.tar.gz"
-  end
-  def used?
-    File.exist?("#{build_path}/bin/pdftk") && File.exist?("#{build_path}/bin/lib/libgcj.so.12")
+    "#{build_path}/vendor"
   end
   def compile
-    write_stdout "copying #{name}"
-    #download the source and extract
-    %x{ mkdir -p #{path} && curl --silent #{source_url} -o - | tar -xz -C #{path} -f - } 
-    write_stdout "complete extracting #{name}"
+    NAME_SOURCES.each do |name,source_url|
+      write_stdout "copying #{name}"
+      #download the source and extract
+      %x{ mkdir -p #{path} && curl --silent #{source_url} -o - | tar -xz -C #{path} -f - }
+      write_stdout "complete extracting #{name}"
+    end
   end
   def cleanup!
     
   end
   def prepare
-    File.delete("#{build_path}/bin/lib/libgcj.so.12") if File.exist?("#{build_path}/bin/libgcj.so.12")
-    File.delete("#{build_path}/bin/pdftk") if File.exist?("#{build_path}/bin/pdftk")
   end
   
 end
