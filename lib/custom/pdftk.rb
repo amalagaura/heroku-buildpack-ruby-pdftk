@@ -1,6 +1,6 @@
 class Pdftk < BaseCustom
   S3_PREFIX='http://s3.amazonaws.com/heroku_binaries'
-  NAME_SOURCES={ pdftk: 'pdftk.tar.gz', poppler:  'heroku-poppler.tgz', pdf2text: 'pdf2text.tgz'}
+  NAME_SOURCES={ pdftk: 'pdftk.tar.gz', poppler:  'heroku-poppler.tgz', pdf2text: 'pdf2txt.tgz'}
   def path
     "#{build_path}/vendor"
   end
